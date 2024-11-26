@@ -126,18 +126,17 @@ def view_egram():
     ]
     return render_template('view_egram_data.html', egram_data=egram_data, user=current_user)
 
-@views.route('/update_status/<new_status>')
+@views.route('/update-status/<string:new_status>', methods=['POST'])
 @login_required
 def update_status(new_status):
-    if current_user.role != 'admin':  # Example admin role check
-        return "Unauthorized", 403
-    if new_status not in ["Connected", "Out of Range", "Noise", "Another Device Detected"]:
-        return "Invalid status", 400
+    valid_statuses = ["Connected", "Out of Range", "Noise", "Another Device Detected"]
+    if new_status not in valid_statuses:
+        return jsonify({"error": "Invalid status"}), 400
 
     new_entry = PacemakerStatus(status=new_status)
     db.session.add(new_entry)
     db.session.commit()
-    return f"Status updated to {new_status}", 200
+    return jsonify({"message": f"Status updated to {new_status}"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
