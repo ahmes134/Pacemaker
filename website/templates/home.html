@@ -142,6 +142,24 @@
     <p>&copy; 2024 Pacemaker Project | <a href="#">Privacy Policy</a></p>
 </div>
 
+<script>
+    function checkConnectionStatus() {
+        fetch('/check-connection-status')
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.querySelector('.status-indicator');
+                statusElement.textContent = data.pacemaker_status;
+                statusElement.className = `status-indicator ${data.pacemaker_status_class}`;
+            })
+            .catch(error => {
+                console.error("Error checking connection status:", error);
+            });
+    }
+
+    // Check connection status every 5 seconds
+    setInterval(checkConnectionStatus, 5000);
+</script>
+
 
 
 {% endblock %}
