@@ -2,7 +2,7 @@ import serial
 import time
 
 class SerialCommunication:
-    def __init__(self, port, baudrate=9600, timeout=1):
+    def __init__(self, port, baudrate=11520, timeout=1):
         """
         Initialize the serial connection.
         :param port: Serial port (e.g., 'COM3' or '/dev/ttyUSB0')
@@ -36,6 +36,13 @@ class SerialCommunication:
             self.serial_conn.close()
             print("Serial connection closed.")
 
+    def is_connected(self):
+        """
+        Check if the serial connection is active.
+        :return: True if connected, False otherwise.
+        """
+        return self.serial_conn is not None and self.serial_conn.is_open
+
     def send_data(self, data):
         """
         Transmit data to the pacemaker.
@@ -68,18 +75,18 @@ class SerialCommunication:
             return None
 
 if __name__ == "__main__":
-    # Example usage
-    pacemaker_serial = SerialCommunication(port='COM3', baudrate=9600)
+
+    port = "COM11"  # Replace with your port
+    baudrate = 11520
+    timeout = 1
 
     try:
-        pacemaker_serial.connect()
-        
-        # Example of sending a command
-        pacemaker_serial.send_data("START\n")
-        
-        # Example of receiving a response
-        response = pacemaker_serial.receive_data()
-        print(f"Response from pacemaker: {response}")
-
-    finally:
-        pacemaker_serial.disconnect()
+        # Attempt to open the connection
+        conn = serial.Serial(port, baudrate, timeout=timeout)
+        if conn.is_open:
+            print(f"Successfully connected to {port}")
+        conn.close()
+    except serial.SerialException as e:
+        print(f"SerialException: {e}")
+    except Exception as e:
+        print(f"Unexpected error: {e}")

@@ -142,24 +142,23 @@
     <p>&copy; 2024 Pacemaker Project | <a href="#">Privacy Policy</a></p>
 </div>
 
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script>
-    function checkConnectionStatus() {
-        fetch('/check-connection-status')
-            .then(response => response.json())
-            .then(data => {
-                const statusElement = document.querySelector('.status-indicator');
-                statusElement.textContent = data.pacemaker_status;
-                statusElement.className = `status-indicator ${data.pacemaker_status_class}`;
-            })
-            .catch(error => {
-                console.error("Error checking connection status:", error);
-            });
-    }
+    const socket = io.connect('http://127.0.0.1:5000'); // Replace with your server URL if deployed
 
-    // Check connection status every 5 seconds
-    setInterval(checkConnectionStatus, 5000);
+    socket.on('connect', () => {
+        console.log('Connected to server');
+        setInterval(() => {
+            socket.emit('check_status'); // Emit a status check request every second
+        }, 1000); // 1 second interval
+    });
+
+    socket.on('status_update', (data) => {
+        const statusElement = document.querySelector('.status-indicator');
+        statusElement.textContent = data.pacemaker_status;
+        statusElement.className = `status-indicator ${data.pacemaker_status_class}`;
+    });
 </script>
-
 
 
 {% endblock %}
