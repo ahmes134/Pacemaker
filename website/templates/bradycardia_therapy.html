@@ -578,4 +578,39 @@ block content %}
   });
 </script>
 
+<script>
+  document.querySelector(".submit-button").addEventListener("click", function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Collect data from the form
+    const therapyType = document.getElementById("therapyType").value;
+    const parameters = Array.from(document.querySelectorAll(".parameter-field input, .parameter-field select"))
+      .filter((input) => input.style.display !== "none") // Only collect visible inputs
+      .reduce((acc, input) => {
+        acc[input.name] = input.value;
+        return acc;
+      }, {});
+
+    // Combine therapyType with parameters
+    const data = {
+      therapyType,
+      parameters,
+    };
+
+    // Send data to the server
+    fetch("/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Success:", result);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
+</script>
+
 {% endblock %}
