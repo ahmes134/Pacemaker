@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report_type }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 style="text-align: center; font-size: 28px; color: #444;">{{ report_type }}</h1>
+    <hr style="border: 1px solid #c42727; margin: 20px 0;">
+
+    <!-- Report Header -->
+    <div style="background-color: #f7f7f7; padding: 20px; border-radius: 5px;">
+        <p><strong>Institution Name:</strong> {{ institution_name }}</p>
+        <p><strong>Date Range:</strong> {{ start_date }} - {{ end_date }}</p>
+        <p><strong>Device Model and Serial Number:</strong> {{ device_model }} ({{ serial_number }})</p>
+        <p><strong>DCM Serial Number:</strong> {{ dcm_serial_number }}</p>
+        <p><strong>Application Version:</strong> {{ application_version }}</p>
+    </div>
+    <hr style="border: 1px solid #c42727; margin: 20px 0;">
+
+    <!-- Report Content -->
+    <div>
+        <h2 style="font-size: 24px; color: #333;">Report Details</h2>
+        <p style="font-size: 16px; color: #555;">{{ report_content }}</p>
+    </div>
+</div>
+{% endblock %}
