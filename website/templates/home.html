@@ -1,165 +1,162 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
-    %}
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pacemaker Device Controller</title>
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lato:wght@400&display=swap');
-    
-            body {
-                font-family: Arial, sans-serif;
-                background: linear-gradient(135deg, #f9f9f9 0%, #ffebeb 100%);
-                margin: 0;
-                padding: 0;
-            }
-    
-       
-            .header {
-                background-color: transparent; 
-                color: #990000; 
-                padding: 20px; 
-                text-align: center;
-                font-family: 'Poppins', sans-serif;
-            }
-    
-            .header h1 {
-                font-size: 36px;
-                font-weight: 600;
-                margin: 0;
-                letter-spacing: 2px;
-                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); 
-            }
-    
-            .container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                padding: 20px;
-                min-height: 80vh;
-            }
-    
-            .card {
-                background-color: white;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                border-radius: 10px;
-                max-width: 600px;
-                width: 100%;
-                padding: 20px;
-                text-align: center;
-            }
-    
-            .card h1 {
-                color: #990000;
-                font-family: 'Poppins', sans-serif;
-                font-size: 32px;
-                font-weight: 600;
-                margin-bottom: 20px;
-            }
-    
-            .card p {
-                font-size: 18px;
-                color: #333;
-            }
-    
-            .status-section {
-                margin-top: 30px;
-                padding: 20px;
-                background-color: #fff7f7;
-                border: 2px solid #990000;
-                border-radius: 8px;
-            }
-    
-            .status-section p {
-                margin: 0;
-                font-size: 18px;
-            }
-    
-            /* Style for the status indicator when the device is connected */
-            .status-indicator.connected {
-                color: green;
-            }
-    
-            /* Style for the status indicator when the device is out of range */
-            .status-indicator.out-of-range {
-                color: red;
-            }
-    
-            /* Style for the status indicator when there is noise detected */
-            .status-indicator.noise {
-                color: orange;
-            }
-    
-            /* Style for the status indicator when another device is detected */
-            .status-indicator.another-device {
-                color: blue;
-            }
-    
-            .footer {
-                text-align: center;
-                padding: 20px;
-                background-color: #333;
-                color: white;
-            }
-    
-            .footer a {
-                color: #990000;
-                text-decoration: none;
-            }
-        </style>
-    </head>
-    <body>
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pacemaker Device Controller</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=Lato:wght@400&display=swap");
+
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f9f9f9 0%, #ffebeb 100%);
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        background-color: transparent;
+        color: #990000;
+        padding: 20px;
+        text-align: center;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .header h1 {
+        font-size: 36px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 2px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        min-height: 80vh;
+      }
+
+      .card {
+        background-color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        max-width: 600px;
+        width: 100%;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .card h1 {
+        color: #990000;
+        font-family: "Poppins", sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      .card p {
+        font-size: 18px;
+        color: #333;
+      }
+
+      .status-section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #fff7f7;
+        border: 2px solid #990000;
+        border-radius: 8px;
+      }
+
+      .status-section p {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      /* Style for the status indicator when the device is connected */
+      .status-indicator.connected {
+        color: green;
+      }
+
+      /* Style for the status indicator when the device is out of range */
+      .status-indicator.out-of-range {
+        color: red;
+      }
+
+      /* Style for the status indicator when there is noise detected */
+      .status-indicator.noise {
+        color: orange;
+      }
+
+      /* Style for the status indicator when another device is detected */
+      .status-indicator.another-device {
+        color: blue;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px;
+        background-color: #333;
+        color: white;
+      }
+
+      .footer a {
+        color: #990000;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
     <!-- Header section containing the main title -->
     <div class="header">
-        <h1>Pacemaker Device Controller Manager</h1>
+      <h1>Pacemaker Device Controller Manager</h1>
     </div>
-    
+
     <!-- Main container for the content -->
     <div class="container">
-        <!-- Card element for displaying the welcome message and information -->
-        <div class="card">
-            <!-- Dynamic welcome message for the user -->
-            <h1>Welcome, {{ user_name if user_name else user.first_name }}!</h1>
-            <p>Monitor and manage your pacemaker device settings seamlessly.</p>
-    
-            <!-- Section for displaying the pacemaker connection status -->
-            <div class="status-section">
-                <p>Connection Status: 
-                    <!-- Dynamic status indicator with a class based on pacemaker status -->
-                    <span class="status-indicator {{ pacemaker_status_class }}">
-                        {{ pacemaker_status }}
-                    </span>
-                </p>
-            </div>
+      <!-- Card element for displaying the welcome message and information -->
+      <div class="card">
+        <!-- Dynamic welcome message for the user -->
+        <h1>Welcome, {{ user_name if user_name else user.first_name }}!</h1>
+        <p>Monitor and manage your pacemaker device settings seamlessly.</p>
+
+        <!-- Section for displaying the pacemaker connection status -->
+        <div class="status-section">
+          <p>
+            Connection Status:
+            <!-- Dynamic status indicator with a class based on pacemaker status -->
+            <span class="status-indicator {{ pacemaker_status_class }}">
+              {{ pacemaker_status }}
+            </span>
+          </p>
         </div>
+      </div>
     </div>
-    
+
     <!-- Footer section with copyright information and a privacy policy link -->
     <div class="footer">
-        <p>&copy; 2024 Pacemaker Project | <a href="#">Privacy Policy</a></p>
+      <p>&copy; 2024 Pacemaker Project | <a href="#">Privacy Policy</a></p>
     </div>
-    
+
     <script>
-        function updateConnectionStatus() {
-            fetch('/check-connection-status')
-                .then(response => response.json())
-                .then(data => {
-                    const statusElement = document.querySelector('.status-indicator');
-                    statusElement.textContent = data.pacemaker_status;
-                    statusElement.className = `status-indicator ${data.pacemaker_status_class}`;
-                })
-                .catch(error => console.error('Error fetching connection status:', error));
-        }
-    
-        setInterval(updateConnectionStatus, 5000);
+      function updateConnectionStatus() {
+        fetch("/check-connection-status")
+          .then((response) => response.json())
+          .then((data) => {
+            const statusElement = document.querySelector(".status-indicator");
+            statusElement.textContent = data.pacemaker_status;
+            statusElement.className = `status-indicator ${data.pacemaker_status_class}`;
+          })
+          .catch((error) =>
+            console.error("Error fetching connection status:", error)
+          );
+      }
+
+      setInterval(updateConnectionStatus, 5000);
     </script>
-    </body>
-    </html>
-    {% endblock %}
-    
-    
-    {% endblock %}
-    
+  </body>
+</html>
+{% endblock %}

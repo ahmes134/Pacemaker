@@ -69,6 +69,8 @@ class User(db.Model, UserMixin):  # inherit from Usermixin ONLY for the user obj
    # language = db.Column(db.String(50))
 
 # Model representing electrogram (Egram) data
+
+
 class EgramData(db.Model):
     __tablename__ = 'egram_data'  # Name of the database table
     # Primary key for the table, an auto-incrementing integer
@@ -77,36 +79,35 @@ class EgramData(db.Model):
     timestamp = Column(DateTime, default=datetime.utcnow)
     # Signal value associated with the Egram
     signal_value = Column(Float, nullable=False)
-    #event marker that indicates the type of event
-    event_marker = Column(String(50), nullable=True)  # Event markers: AS, AP, VS, VP
+    # event marker that indicates the type of event
+    # Event markers: AS, AP, VS, VP
+    event_marker = Column(String(50), nullable=True)
 
     # Constructor for initializing an EgramData object
     def __init__(self, signal_value, event_marker=None):
         self.signal_value = signal_value
         self.event_marker = event_marker
 
-# Model representing the status of a pacemaker
-class PacemakerStatus(db.Model):
-    # Primary key for the table, an auto-incrementing integer
-    id = db.Column(db.Integer, primary_key=True)
-    # Status of the pacemaker
-    status = db.Column(db.String(50), nullable=False)
-    # Constructor for initializing a PacemakerStatus object
-    def __init__(self, status):
-        self.status = status
 
 class Report(db.Model):  # Define a new type of object for reports
     __tablename__ = 'reports'  # Table name in the database
 
-    id = db.Column(db.Integer, primary_key=True)  # Unique identifier for each report
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # Foreign key to associate report with user
-    report_type = db.Column(db.String(50), nullable=False)  # Type of report (e.g., Bradycardia Parameters)
-    start_date = db.Column(db.Date, nullable=False)  # Start date for the report
+    # Unique identifier for each report
+    id = db.Column(db.Integer, primary_key=True)
+    # Foreign key to associate report with user
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    # Type of report (e.g., Bradycardia Parameters)
+    report_type = db.Column(db.String(50), nullable=False)
+    # Start date for the report
+    start_date = db.Column(db.Date, nullable=False)
     end_date = db.Column(db.Date, nullable=False)  # End date for the report
-    created_at = db.Column(db.DateTime, default=func.now())  # Timestamp of report creation
-    data = db.Column(db.JSON, nullable=True)  #to store report data in JSON format
+    # Timestamp of report creation
+    created_at = db.Column(db.DateTime, default=func.now())
+    # to store report data in JSON format
+    data = db.Column(db.JSON, nullable=True)
 
-    user = db.relationship('User', backref='reports')  # Define a relationship with User
+    # Define a relationship with User
+    user = db.relationship('User', backref='reports')
 
     def __repr__(self):
         return f'<Report {self.id}, Type: {self.report_type}, User: {self.user_id}>'

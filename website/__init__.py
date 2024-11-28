@@ -7,13 +7,14 @@ from flask_migrate import Migrate
 db = SQLAlchemy()
 DB_NAME = "database.db"
 migrate = Migrate()
-  # Create an instance of CSRFProtect
+# Create an instance of CSRFProtect
+
 
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    
+
     db.init_app(app)
     migrate.init_app(app, db)
  # Enable CSRF protection for the app
@@ -39,6 +40,7 @@ def create_app():
         return User.query.get(int(id))
 
     return app
+
 
 def create_database(app):
     if not path.exists('website/' + DB_NAME):

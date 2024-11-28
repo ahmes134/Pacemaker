@@ -18,11 +18,7 @@
     <style>
       /* Custom CSS for red gradient navbar */
       .navbar-gradient {
-        background: linear-gradient(
-          to right,
-          #ff4d4d,
-          #b30000
-        ); 
+        background: linear-gradient(to right, #ff4d4d, #b30000);
         color: white;
       }
 
@@ -32,9 +28,9 @@
       }
 
       .navbar-gradient {
-        background: linear-gradient(to right, #ff4d4d, #b30000); 
+        background: linear-gradient(to right, #ff4d4d, #b30000);
         color: white;
-        height: 70px; 
+        height: 70px;
       }
       .navbar-gradient .nav-link:hover {
         color: #ffcccc !important;
@@ -60,73 +56,83 @@
       <div class="collapse navbar-collapse" id="navbar">
         <div class="navbar-nav">
           {% if user.is_authenticated %}
-                 <!-- Dropdown for selecting different patients (First item in the navbar) -->
-                 <li class="nav-item dropdown">
-                  <a
-                    class="nav-link dropdown-toggle"
-                    href="#"
-                    id="patientsDropdown"
-                    role="button"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    {{ user.first_name }}'s Patients <!-- Updated header -->
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="patientsDropdown">
-                    <!-- Dynamically list patients here -->
-                    <a class="dropdown-item" href="/patient/1">Patient 1</a>
-                    <a class="dropdown-item" href="/patient/2">Patient 2</a>
-                    <a class="dropdown-item" href="/patient/3">Patient 3</a>
-                    <!-- Add more patients as needed -->
-                  </div>
-                </li>
-      
-                <a class="nav-item nav-link" id="home" href="/">Home</a>
-                <a class="nav-item nav-link" id="about" href="/about">About</a>
-                <a class="nav-item nav-link" id="set_clock" href="/set-clock">Set Clock</a>
-                <a class="nav-item nav-link" id="bradycardia_therapy" href="/bradycardia-therapy">Bradycardia Therapy</a>
-                <a class="nav-item nav-link" id="generate_report" href="/generate-report">Generate Report</a>
-                <a class="nav-item nav-link" id="view_egram" href="/view_egram">View Egram</a> <!-- New link -->
-                <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
-                {% else %}
-                <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-                <a class="nav-item nav-link" id="Login" href="/login">Login</a>
-                
-                {% endif %}
-                
+          <!-- Dropdown for selecting different patients (First item in the navbar) -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle"
+              href="#"
+              id="patientsDropdown"
+              role="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              {{ user.first_name }}'s Patients
+              <!-- Updated header -->
+            </a>
+            <div class="dropdown-menu" aria-labelledby="patientsDropdown">
+              <!-- Dynamically list patients here -->
+              <a class="dropdown-item" href="/patient/1">Patient 1</a>
+              <a class="dropdown-item" href="/patient/2">Patient 2</a>
+              <a class="dropdown-item" href="/patient/3">Patient 3</a>
+              <!-- Add more patients as needed -->
+            </div>
+          </li>
+
+          <a class="nav-item nav-link" id="home" href="/">Home</a>
+          <a class="nav-item nav-link" id="about" href="/about">About</a>
+          <a class="nav-item nav-link" id="set_clock" href="/set-clock"
+            >Set Clock</a
+          >
+          <a
+            class="nav-item nav-link"
+            id="bradycardia_therapy"
+            href="/bradycardia-therapy"
+            >Bradycardia Therapy</a
+          >
+          <a
+            class="nav-item nav-link"
+            id="generate_report"
+            href="/generate-report"
+            >Generate Report</a
+          >
+          <a class="nav-item nav-link" id="view_egram" href="/view_egram"
+            >View Egram</a
+          >
+          <!-- New link -->
+          <a class="nav-item nav-link" id="logout" href="/logout">Logout</a>
+          {% else %}
+          <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
+          <a class="nav-item nav-link" id="Login" href="/login">Login</a>
+
+          {% endif %}
         </div>
       </div>
     </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <!-- Loop through each message and its associated category  -->
-            {% if category == "error" %}
-                <!-- If the message is categorized as an error, display it as a red Bootstrap alert  -->
-                <div class="alert alert-danger alter-dismissable fade show" role="alert">
-                    {{ message }}
-                    <!-- Display the actual message content  -->
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <!-- Dismiss button to close the alert  -->
-                </div>
-            {% else %}
-                <!-- If the message is not an error, display it as a success (green Bootstrap alert) -->
-                <div class="alert alert-success alter-dismissable fade show" role="alert">
-                    {{ message }}
-                    <!-- Display the actual message content -->
-                    <button type="button" class="close" data-dismiss="alert">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-{% endwith %}
-
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <!-- Loop through each message and its associated category  -->
+    {% if category == "error" %}
+    <!-- If the message is categorized as an error, display it as a red Bootstrap alert  -->
+    <div class="alert alert-danger alter-dismissable fade show" role="alert">
+      {{ message }}
+      <!-- Display the actual message content  -->
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <!-- Dismiss button to close the alert  -->
+    </div>
+    {% else %}
+    <!-- If the message is not an error, display it as a success (green Bootstrap alert) -->
+    <div class="alert alert-success alter-dismissable fade show" role="alert">
+      {{ message }}
+      <!-- Display the actual message content -->
+      <button type="button" class="close" data-dismiss="alert">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
 
     <div class="container">{% block content %} {% endblock %}</div>
 

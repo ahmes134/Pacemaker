@@ -1,100 +1,97 @@
-{% extends "base.html" %}
-
-{% block title %}View Egram{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}View Egram{% endblock %} {% block
+content %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<style>
-  .egram-page {
-    font-family: Arial, sans-serif;
-    margin: 0 auto;
-    padding: 20px;
-    width: 90%;
-    max-width: 1200px;
-  }
+  <head>
+    <style>
+      .egram-page {
+        font-family: Arial, sans-serif;
+        margin: 0 auto;
+        padding: 20px;
+        width: 90%;
+        max-width: 1200px;
+      }
 
-  .page-header {
-    text-align: center;
-    margin-top: 20px;
-  }
+      .page-header {
+        text-align: center;
+        margin-top: 20px;
+      }
 
-  .page-header h1 {
-    font-size: 36px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
-    border-bottom: 4px solid #c42727;  
-    padding-bottom: 10px;  
-  }
+      .page-header h1 {
+        font-size: 36px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 10px;
+        border-bottom: 4px solid #c42727;
+        padding-bottom: 10px;
+      }
 
-  .page-header h2 {
-    font-size: 28px;
-    font-weight: 400;
-    color: #555;
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
+      .page-header h2 {
+        font-size: 28px;
+        font-weight: 400;
+        color: #555;
+        margin-top: 0;
+        margin-bottom: 20px;
+      }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
 
-  th, td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
 
-  th {
-    background-color: #f2f2f2;
-  }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="egram-page">
+      <div class="page-header">
+        <h1>View Egram</h1>
+      </div>
 
-</style>
-</head>
-<body>
-<div class="egram-page">
-  <div class="page-header">
-    <h1>View Egram</h1>
-  </div>
-
-  <!-- Sample Data Table -->
-  <h2>Egram Data</h2>
-  <table id="data-table">
-    <thead>
-      <tr>
-        <th>Timestamp</th>
-        <th>Signal Value</th>
-        <th>Event Marker</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>2024-10-13 10:00:00</td>
-        <td>1.5</td>
-        <td>Atrial Sense (AS)</td>
-      </tr>
-      <tr>
-        <td>2024-10-13 10:01:00</td>
-        <td>2.3</td>
-        <td>Atrial Pace (AP)</td>
-      </tr>
-      <tr>
-        <td>2024-10-13 10:02:00</td>
-        <td>1.8</td>
-        <td>Ventricular Sense (VS)</td>
-      </tr>
-      <tr>
-        <td>2024-10-13 10:03:00</td>
-        <td>2.0</td>
-        <td>Ventricular Pace (VP)</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-</body>
+      <!-- Sample Data Table -->
+      <h2>Egram Data</h2>
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Signal Value</th>
+            <th>Event Marker</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2024-10-13 10:00:00</td>
+            <td>1.5</td>
+            <td>Atrial Sense (AS)</td>
+          </tr>
+          <tr>
+            <td>2024-10-13 10:01:00</td>
+            <td>2.3</td>
+            <td>Atrial Pace (AP)</td>
+          </tr>
+          <tr>
+            <td>2024-10-13 10:02:00</td>
+            <td>1.8</td>
+            <td>Ventricular Sense (VS)</td>
+          </tr>
+          <tr>
+            <td>2024-10-13 10:03:00</td>
+            <td>2.0</td>
+            <td>Ventricular Pace (VP)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
 {% endblock %}
