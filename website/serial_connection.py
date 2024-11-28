@@ -48,6 +48,21 @@ class SerialCommunication:
                 self.serial_conn.close()
                 self.serial_conn = None
         return False
+    
+
+    def receive_data(self):
+        """
+        Receives data from the pacemaker.
+        """
+        if self.serial_conn and self.serial_conn.is_open:
+            try:
+                received = self.serial_conn.readline().decode().strip()
+                print(f"Received data: {received}")
+                return received
+            except serial.SerialException:
+                print("Error reading from serial port.")
+        return None
+
 
     def sendSerial(self, mode, LRL, URL, Max_Sensor_Rate, AV_Delay, A_Amplitude, V_Amplitude, A_Pulse_Width, V_Pulse_Width, A_Sensitivity, V_Sensitivity, VRP, ARP, PVARP, Activity_Threshold, Reaction_Time, Response_Factor, Recovery_Time, port):
         """
@@ -170,7 +185,6 @@ class SerialCommunication:
                 uC.close()
             except serial.SerialException as e:
                 print(f"Serial port error: {e}")
-
         except struct.error as e:
             print(f"Error in struct packing: {e}")
 
@@ -178,20 +192,6 @@ class SerialCommunication:
             
         except Exception as e:
             print(f"Error in transmitting data: {e}")
-
-
-        def receive_data(self):
-            """
-            Receives data from the pacemaker.
-            """
-            if self.serial_conn and self.serial_conn.is_open:
-                try:
-                    received = self.serial_conn.readline().decode().strip()
-                    print(f"Received data: {received}")
-                    return received
-                except serial.SerialException:
-                    print("Error reading from serial port.")
-            return None
 
         # Instantiate the SerialCommunication class
         serial_conn = SerialCommunication(port="/dev/cu.usbmodem21103")  # Replace with the actual port
