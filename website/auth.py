@@ -41,6 +41,10 @@ def logout():
 def about():
     return render_template("about.html", user=current_user)
 
+@auth.route('/view_egram', methods=['GET', 'POST'])
+@login_required
+def view_egram():
+    return render_template("view_egram_data.html", user=current_user)
 
 @auth.route('/bradycardia-therapy', methods=['GET', 'POST'])
 @login_required
