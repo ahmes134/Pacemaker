@@ -46,7 +46,6 @@ class Parameters(db.Model):
     pvarp = db.Column(db.Integer)  # post ventricular atrial refractory period
     pvarp_ext = db.Column(db.Integer)
     hysteresis = db.Column(db.Integer)
-    rate_smoothing = db.Column(db.Integer)
     atr_duration = db.Column(db.Integer)
     atr_fallback_mode = db.Column(db.Integer)
     atr_fallback_time = db.Column(db.Integer)

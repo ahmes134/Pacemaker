@@ -8,6 +8,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from flask import make_response
 
+
 # Create the Flask app instance
 app = Flask(__name__)
 
@@ -49,8 +50,7 @@ def generate_report():
     return send_file(buffer, as_attachment=True, download_name="report.pdf", mimetype="application/pdf")
 
 
-# Initialize serial communication
-serial_conn = SerialCommunication(port="COM6", baudrate=115200)
+serial_conn = SerialCommunication(port="/dev/cu.usbmodem21103")
 serial_conn.connect()
 
 # Status mapping for styling
@@ -89,75 +89,88 @@ def home():
     )
 
 
-@views.route("/submit", methods=["POST"])
-def submit():
+# Route for bradycardia therapy page (if not already present)
+@views.route("/bradycardia-therapy", methods=["GET", "POST"])
+@login_required
+def bradycardia_therapy():
     """
-    Route to handle parameter submission and send it to the pacemaker.
+    Handles form submission for bradycardia therapy parameters and sends the data to the pacemaker device.
     """
-    try:
-        # Parse the data from the POST request
-        data = request.get_json()
+    
+    if request.method == "POST":
+        try:
+            # Retrieve form data from bradycardia.html
+            therapy_type = request.form.get("therapy_type", "")
+            lrl = request.form.get("lrl", 30)  # Default if not provided
+            url = request.form.get("url", 50)
+            max_sensor_rate = request.form.get("max_sensor_rate", 50)
+            fixed_av_delay = request.form.get("fixed_av_delay", 70)
+            atrial_amp = request.form.get("atrial_pulse_amp_value", 0)
+            ventricular_amp = request.form.get("ventricular_amp_value", 0)
+            atrial_pulse_width = request.form.get("atrial_pulse_width", 1)
+            ventricular_pulse_width = request.form.get("ventricular_pulse_width", 1)
+            atrial_sensitivity = request.form.get("atrial_sensitivity", 0)
+            ventricular_sensitivity = request.form.get("ventricular_sensitivity", 0)
+            vrp = request.form.get("vrp", 150)
+            arp = request.form.get("arp", 150)
+            pvarp = request.form.get("pvarp", 150)
+            activity_threshold = request.form.get("activity_threshold", 0)
+            reaction_time = request.form.get("reaction_time", 10)
+            response_factor = request.form.get("response_factor", 1)
+            recovery_time = request.form.get("recovery_time", 2)
 
-        # Extract parameters
-        mode = data['mode']
-        LRL = int(data['LRL'])
-        URL = int(data['URL'])
-        Max_Sensor_Rate = int(data.get('Max_Sensor_Rate', 0))
-        AV_Delay = int(data.get('AV_Delay', 150))
-        A_Amplitude = float(data.get('A_Amplitude', 0.0))
-        V_Amplitude = float(data.get('V_Amplitude', 0.0))
-        A_Pulse_Width = int(data.get('A_Pulse_Width', 0))
-        V_Pulse_Width = int(data.get('V_Pulse_Width', 0))
-        A_Sensitivity = float(data.get('A_Sensitivity', 0.0))
-        V_Sensitivity = float(data.get('V_Sensitivity', 0.0))
-        VRP = int(data.get('VRP', 0))
-        ARP = int(data.get('ARP', 0))
-        PVARP = int(data.get('PVARP', 0))
-        Rate_Smoothing = int(data.get('Rate_Smoothing', 0))
-        Activity_Threshold = float(data.get('Activity_Threshold', 0.0))
-        Reaction_Time = int(data.get('Reaction_Time', 0))
-        Response_Factor = int(data.get('Response_Factor', 0))
-        Recovery_Time = int(data.get('Recovery_Time', 0))
-        Function_Call = int(data.get('Function_Call', 0))
-        port = data.get('port', "COM6")
+            # Log the parameters for debugging
+            print("Received parameters from form:")
+            print(f"Therapy Type: {therapy_type}, LRL: {lrl}, URL: {url}")
+            print(f"Max Sensor Rate: {max_sensor_rate}, Fixed AV Delay: {fixed_av_delay}")
+            print(f"Atrial Amp: {atrial_amp}, Ventricular Amp: {ventricular_amp}")
+            print(f"Atrial Pulse Width: {atrial_pulse_width}, Ventricular Pulse Width: {ventricular_pulse_width}")
+            print(f"Atrial Sensitivity: {atrial_sensitivity}, Ventricular Sensitivity: {ventricular_sensitivity}")
+            print(f"VRP: {vrp}, ARP: {arp}, PVARP: {pvarp}")
+            print(f"Reaction Time: {reaction_time}, Response Factor: {response_factor}")
+            print(f"Recovery Time: {recovery_time}")
+            
+            print(f"Received therapy type: {therapy_type}")
 
-        # Print the received parameters for debugging
-        print("Received Parameters:")
-        print(f"Mode: {mode}")
-        print(f"Lower Rate Limit (LRL): {LRL}")
-        print(f"Upper Rate Limit (URL): {URL}")
-        print(f"Max Sensor Rate: {Max_Sensor_Rate}")
-        print(f"AV Delay: {AV_Delay}")
-        print(f"Atrial Amplitude: {A_Amplitude}")
-        print(f"Ventricular Amplitude: {V_Amplitude}")
-        print(f"Atrial Pulse Width: {A_Pulse_Width}")
-        print(f"Ventricular Pulse Width: {V_Pulse_Width}")
-        print(f"Atrial Sensitivity: {A_Sensitivity}")
-        print(f"Ventricular Sensitivity: {V_Sensitivity}")
-        print(f"VRP: {VRP}")
-        print(f"ARP: {ARP}")
-        print(f"PVARP: {PVARP}")
-        print(f"Rate Smoothing: {Rate_Smoothing}")
-        print(f"Activity Threshold: {Activity_Threshold}")
-        print(f"Reaction Time: {Reaction_Time}")
-        print(f"Response Factor: {Response_Factor}")
-        print(f"Recovery Time: {Recovery_Time}")
-        print(f"Function Call: {Function_Call}")
-        print(f"Port: {port}")
+            if therapy_type not in serial_conn.mode_map:
+                print(f"Invalid therapy type: {therapy_type}")
+                return jsonify({"error": "Invalid therapy type provided"}), 400
+            
+            if not therapy_type:
+              return jsonify({"error": "Therapy Type is required"}), 400
+            
+            # Call the sendSerial method to send data via serial connection
+            serial_conn.sendSerial(
+                mode= therapy_type,
+                LRL=lrl,
+                URL=url,
+                Max_Sensor_Rate=max_sensor_rate,
+                AV_Delay=fixed_av_delay,
+                A_Amplitude=atrial_amp,
+                V_Amplitude=ventricular_amp,
+                A_Pulse_Width=atrial_pulse_width,
+                V_Pulse_Width=ventricular_pulse_width,
+                A_Sensitivity=atrial_sensitivity,
+                V_Sensitivity=ventricular_sensitivity,
+                VRP=vrp,
+                ARP=arp,
+                PVARP=pvarp,
+                Activity_Threshold=activity_threshold,
+                Reaction_Time=reaction_time,
+                Response_Factor=response_factor,
+                Recovery_Time=recovery_time,
+                Function_Call=1,  # Example function call
+                port="/dev/cu.usbmodem21103"  # Update with your COM port
+            )
 
-        # Send the parameters to the pacemaker
-        serial_conn.sendSerial(
-            mode, LRL, URL, Max_Sensor_Rate, AV_Delay, A_Amplitude, V_Amplitude,
-            A_Pulse_Width, V_Pulse_Width, A_Sensitivity, V_Sensitivity, VRP,
-            ARP, PVARP, Rate_Smoothing, Activity_Threshold, Reaction_Time,
-            Response_Factor, Recovery_Time, Function_Call, port
-        )
+            return jsonify({"message": "Parameters sent successfully!"}), 200
 
-        return jsonify({"message": "Data successfully sent to pacemaker!"}), 200
+        except Exception as e:
+            print(f"Error: {e}")
+            return jsonify({"message": "Failed to send data.", "error": str(e)}), 500
 
-    except Exception as e:
-        print(f"Error: {e}")
-        return jsonify({"message": "Failed to send data.", "error": str(e)}), 500
+    # Render the Bradycardia Therapy page
+    return render_template("bradycardia_therapy.html", user=current_user)
 
 
 @views.route('/get-data', methods=['GET'])

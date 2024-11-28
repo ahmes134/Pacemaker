@@ -168,6 +168,14 @@ block content %}
       <!-- Hidden input to hold the selected value -->
       <input type="hidden" id="therapyType" name="therapy_type" value="" />
     </div>
+    <script>
+      // Ensure the hidden input is updated on selection
+      document.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', function () {
+              document.getElementById('therapyType').value = this.getAttribute('data-value');
+          });
+      });
+  </script>
 
     <!-- Parameter fields, only show relevant fields based on therapy mode -->
     <div id="parameters">
@@ -437,21 +445,6 @@ block content %}
             }
         }
     </script>
-  
-      <div data-therapy="AAI VVI VDD DDD AAIR VVIR VDDR DDDR" class="parameter-field">
-        <label for="rate_smoothing">Rate Smoothing:</label>
-        <select id="rate_smoothing" name="rate_smoothing">
-          <option value="Off">Off</option>
-          <option value="3">3%</option>
-          <option value="6">6%</option>
-          <option value="9">9%</option>
-          <option value="12">12%</option>
-          <option value="15">15%</option>
-          <option value="18">18%</option>
-          <option value="21">21%</option>
-          <option value="25">25%</option>
-      </select>
-      </div>
 
        <!--ATR MODE - NEW PARAMETER-->
         <label for="atr_duration">ATR Mode:</label>
@@ -529,51 +522,70 @@ block content %}
     <br></br>
     <input type="submit" value="Submit" class="submit-button" />
   </form>
+
 </body>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-      const submitButton = document.getElementById("submit-button");
-      const dropdownMenu = document.getElementById("dropdownMenu5");
-      const hiddenInput = document.getElementById("therapyType");
-      const dropdownItems = document.querySelectorAll(".dropdown-item");
+ document.addEventListener("DOMContentLoaded", function () {
+    const submitButton = document.getElementById("submit-button");
+    const dropdownMenu = document.getElementById("dropdownMenu5");
+    const hiddenInput = document.getElementById("therapyType");
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+    const parameterFields = document.querySelectorAll(".parameter-field"); // All parameter fields with `data-therapy`
 
-      // Handle dropdown selection
-      dropdownItems.forEach(item => {
-          item.addEventListener("click", function () {
-              dropdownMenu.innerText = this.innerText;  // Set button text
-              hiddenInput.value = this.getAttribute("data-value");  // Set hidden input
-          });
-      });
+    // Handle dropdown selection
+    dropdownItems.forEach(item => {
+        item.addEventListener("click", function () {
+            const selectedTherapy = this.getAttribute("data-value"); // Get selected therapy type
+            hiddenInput.value = selectedTherapy; // Update hidden input value
+            dropdownMenu.innerText = this.innerText; // Update dropdown text
 
-      // Handle form submission
-      submitButton.addEventListener("click", function (event) {
-          event.preventDefault();  // Prevent default form submission
+            // Show or hide parameter fields based on the selected therapy
+            parameterFields.forEach(field => {
+                const therapies = field.getAttribute("data-therapy").split(" "); // Get applicable therapies
+                if (therapies.includes(selectedTherapy)) {
+                    field.style.display = "block"; // Show if therapy matches
+                } else {
+                    field.style.display = "none"; // Hide if therapy doesn't match
+                }
+            });
+        });
+    });
 
-          // Gather form data
-          const formData = {
-              mode: hiddenInput.value,
-              LRL: document.getElementById("lrl").value,
-              URL: document.getElementById("url").value,
-              AV_Delay: document.getElementById("av_delay").value,
-              A_Amplitude: document.getElementById("a_amplitude").value,
-              V_Amplitude: document.getElementById("v_amplitude").value
-          };
+    // Handle form submission
+    submitButton.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent default form submission
 
-          // Send data to the backend
-          fetch("/submit", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(formData)
-          })
-          .then(response => response.json())
-          .then(result => {
-              alert(result.message);  // Display backend response
-          })
-          .catch(error => {
-              console.error("Error:", error);  // Log error for debugging
-          });
-      });
-  });
+        // Gather form data
+        const formData = {
+            mode: hiddenInput.value,
+            LRL: document.getElementById("lrl").value,
+            URL: document.getElementById("url").value,
+            AV_Delay: document.getElementById("av_delay").value,
+            A_Amplitude: document.getElementById("a_amplitude").value,
+            V_Amplitude: document.getElementById("v_amplitude").value
+        };
+
+        // Send data to the backend
+        fetch("/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(result => {
+            alert(result.message); // Display backend response
+        })
+        .catch(error => {
+            console.error("Error:", error); // Log error for debugging
+        });
+    });
+
+    // Trigger the click event for the first dropdown item on page load (optional)
+    if (dropdownItems.length > 0) {
+        dropdownItems[0].click();
+    }
+});
+
 </script>
 </body>
 {% endblock %}
