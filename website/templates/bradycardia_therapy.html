@@ -1,294 +1,330 @@
 {% extends "base.html" %} {% block title %}Bradycardia Therapy{% endblock %} {%
-block content %}
-<br></br>
-<h1 align="center">Bradycardia Therapy</h1>
-<br>
-<head>
-  <title>Parameter Form</title>
-  <style>
-   
-   .therapy-page {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            
-        }
-
-        input, select, button {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-        
-        .page-header {
-            text-align: center;
-            border-bottom: 4px solid #c42727;
-        
-        }
-
-        h1 {
-        color: #333;
-        margin-bottom: 10px;
-        border-bottom: 4px solid #c42727;
-        padding-bottom: 10px;
-        font-size: 36px;
-        font-weight: 690;
-        }
-
-        .header-line {
-            width: 80%;
-            height: 3px;
-            background-color: #c42727;
-            margin: 10px auto;
-            border: none;
-            margin-top: 20px;
-        }
-
-        .dropdown button {
-        background-color: #fff;
-        border: 2px solid #c42727;
-        color: #333;
-        font-size: 16px;
-        padding: 10px;
-        width: 100%;
-        border-radius: 5px;
-        cursor: pointer;
-        text-align: left;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: all 0.3s ease;
-    }
-   .dropdown button:hover {
-        background-color: #f5f5f5;
-    }
-
-    .dropdown button::after {
-        content: '▼';
-        margin-left: 10px;
-        font-size: 12px;
-    }
-    .dropdown-menu {
-        display: none;
-        position: absolute;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 5px;
-        border-radius: 4px;
-        width: 100%;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 100;
-    }
-
-    .dropdown-menu.show {
-        display: block;
-    }
-
-    .dropdown-item {
-        display: block;
-        padding: 8px;
-        cursor: pointer;
-        text-decoration: none;
-        color: #333;
-        font-size: 14px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .dropdown-item:last-child {
-        border-bottom: none;
-    }
-
-    .dropdown-item:hover {
-        background-color: #f0f0f0;
-    }
-
-    .submit-button {
-        background-color: #c42727;
-        color: white;
-        border: none;
-        padding: 14px 0;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 6px;
-        cursor: pointer;
-        width: 100%;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-        transition: background-color 0.3s, transform 0.2s ease;
-    }
-
-    .submit-button:hover {
-        background-color: #a92222;
-        transform: translateY(-2px);
-    }
-
-    .submit-button:active {
-        background-color: #8f1d1d;
-        transform: translateY(0);
-    }
-</style>
-</style>
-</head>
-<body>
-  <form action="/bradycardia-therapy" method="POST">
-    <!-- Drop-down to select the therapy type -->
-    <div class="dropdown">
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="dropdownMenu5"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-      >
-        Select the Therapy Type
-      </button><br></br>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenu5">
-        <a class="dropdown-item" href="#" data-value="AAT">AAT</a>
-        <a class="dropdown-item" href="#" data-value="VVT">VVT</a>
-        <a class="dropdown-item" href="#" data-value="AOO">AOO</a>
-        <a class="dropdown-item" href="#" data-value="AAI">AAI</a>
-        <a class="dropdown-item" href="#" data-value="VOO">VOO</a>
-        <a class="dropdown-item" href="#" data-value="VVI">VVI</a>
-        <a class="dropdown-item" href="#" data-value="VDD">VDD</a>
-        <a class="dropdown-item" href="#" data-value="DOO">DOO</a>
-        <a class="dropdown-item" href="#" data-value="DDI">DDI</a>
-        <a class="dropdown-item" href="#" data-value="DDD">DDD</a>
-        <a class="dropdown-item" href="#" data-value="AOOR">AOOR</a>
-        <a class="dropdown-item" href="#" data-value="AAIR">AAIR</a>
-        <a class="dropdown-item" href="#" data-value="VVIR">VVIR</a>
-        <a class="dropdown-item" href="#" data-value="VDDR">VDDR</a>
-        <a class="dropdown-item" href="#" data-value="DOOR">DOOR</a>
-        <a class="dropdown-item" href="#" data-value="DDIR">DDIR</a>
-        <a class="dropdown-item" href="#" data-value="DDDR">DDDR</a>
-        <a class="dropdown-item" href="#" data-value="VOOR">VOOR</a>
-
-      </div>
-      <!-- Hidden input to hold the selected value -->
-      <input type="hidden" id="therapyType" name="therapy_type" value="" />
-    </div>
-    <script>
-      // Ensure the hidden input is updated on selection
-      document.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function () {
-              document.getElementById('therapyType').value = this.getAttribute('data-value');
-          });
-      });
-  </script>
-
-    <!-- Parameter fields, only show relevant fields based on therapy mode -->
-    <div id="parameters">
-      <div id="parameters">
-        <!-- Lower Rate Limit (LRL) -->
-        <div data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-          <label for="lrl">Lower Rate Limit (LRL):</label>
-          <input type="number" id="lrl" name="lrl" min="30" max="175" step="5" value="30" />
-        </div>
-      </div>
-      
-      <script>
-        // JavaScript to adjust step and range based on value
-        const lrlInput = document.getElementById('lrl');
-      
-        lrlInput.addEventListener('input', function () {
-          const value = parseInt(lrlInput.value, 10);
-      
-          if (value < 50) {
-            lrlInput.step = 5;
-            lrlInput.min = 30;
-            lrlInput.max = 50;
-          } else if (value < 90) {
-            lrlInput.step = 1;
-            lrlInput.min = 50;
-            lrlInput.max = 90;
-          } else {
-            lrlInput.step = 5;
-            lrlInput.min = 90;
-            lrlInput.max = 175;
+  block content %}
+  <br></br>
+  <h1 align="center">Bradycardia Therapy</h1>
+  <br>
+  <head>
+    <title>Parameter Form</title>
+    <style>
+     
+     .therapy-page {
+              display: flex;
+              justify-content: space-between;
+              padding: 20px;
+              
           }
-        });
-      </script>      
-
-      <div
-        data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"
-        class="parameter-field"
-      >
-        <label for="url">Upper Rate Limit (URL):</label>
-        <input type="number" id="lrl" name="lrl" min="50" max="175" step="5" value="50" />
-      </div>
-
-      <div
-        data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"
-        class="parameter-field"
-      >
-        <label for="max_sensor_rate">Max Sensor Rate:</label>
-        <input type="number" id="lrl" name="lrl" min="50" max="175" step="5" value="50" />
-      </div>
-
-      <div
-        data-therapy="VDD DOO DDI DDD VDDR DOOR DDIR DDDR"
-        class="parameter-field"
-      >
-        <label for="fixed_av_delay">Fixed AV Delay:</label>
-        <input type="number" id="lrl" name="lrl" min="70" max="300" step="10" value="70" />
-      </div>
-
-      <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
-        <label for="dynamic_av_delay">Dynamic AV Delay:</label>
-        <select id="dynamic_av_delay_toggle" name="dynamic_av_delay_toggle">
-          <option value="Off">Off</option>
-          <option value="On">On</option>
-        </select>
-      </div>
-
-      <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
-        <label for="dynamic_av_delay">Minimum Dynamic AV Delay:</label>
-        <input type="number" id="lrl" name="lrl" min="30" max="100" step="10" value="30" />
-      </div>
-
-      <div data-therapy="DDD DDDR" class="parameter-field">
-        <label for="sensed_av_delay_offset">Sensed AV Delay Offset:</label>
-        <div id="sensed_av_delay_offset_container">
-            <select id="sensed_av_delay_toggle" name="sensed_av_delay_toggle" onchange="toggleInput(this, 'sensed_av_delay_value')">
-                <option value="Off">Off</option>
-                <option value="On">Set Value</option>
-            </select>
-            
-            <input type="number" id="sensed_av_delay_value" name="sensed_av_delay_value" min="-100" max="-10" step="10" value="-10" style="display:none;" />
+  
+          input, select, button {
+              width: 100%;
+              padding: 8px;
+              font-size: 16px;
+              margin-bottom: 20px;
+          }
+          
+          .page-header {
+              text-align: center;
+              border-bottom: 4px solid #c42727;
+          
+          }
+  
+          h1 {
+          color: #333;
+          margin-bottom: 10px;
+          border-bottom: 4px solid #c42727;
+          padding-bottom: 10px;
+          font-size: 36px;
+          font-weight: 690;
+          }
+  
+          .header-line {
+              width: 80%;
+              height: 3px;
+              background-color: #c42727;
+              margin: 10px auto;
+              border: none;
+              margin-top: 20px;
+          }
+  
+          .dropdown button {
+          background-color: #fff;
+          border: 2px solid #c42727;
+          color: #333;
+          font-size: 16px;
+          padding: 10px;
+          width: 100%;
+          border-radius: 5px;
+          cursor: pointer;
+          text-align: left;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          transition: all 0.3s ease;
+      }
+     .dropdown button:hover {
+          background-color: #f5f5f5;
+      }
+  
+      .dropdown button::after {
+          content: '▼';
+          margin-left: 10px;
+          font-size: 12px;
+      }
+      .dropdown-menu {
+          display: none;
+          position: absolute;
+          background-color: #fff;
+          border: 1px solid #ccc;
+          padding: 5px;
+          border-radius: 4px;
+          width: 100%;
+          max-height: 200px;
+          overflow-y: auto;
+          z-index: 100;
+      }
+  
+      .dropdown-menu.show {
+          display: block;
+      }
+  
+      .dropdown-item {
+          display: block;
+          padding: 8px;
+          cursor: pointer;
+          text-decoration: none;
+          color: #333;
+          font-size: 14px;
+          border-bottom: 1px solid #eee;
+      }
+  
+      .dropdown-item:last-child {
+          border-bottom: none;
+      }
+  
+      .dropdown-item:hover {
+          background-color: #f0f0f0;
+      }
+  
+      .submit-button {
+          background-color: #c42727;
+          color: white;
+          border: none;
+          padding: 14px 0;
+          font-size: 18px;
+          font-weight: bold;
+          border-radius: 6px;
+          cursor: pointer;
+          width: 100%;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s, transform 0.2s ease;
+      }
+  
+      .submit-button:hover {
+          background-color: #a92222;
+          transform: translateY(-2px);
+      }
+  
+      .submit-button:active {
+          background-color: #8f1d1d;
+          transform: translateY(0);
+      }
+  </style>
+  </style>
+  </head>
+  <body>
+    <form action="/bradycardia-therapy" method="POST">
+      <!-- Drop-down to select the therapy type -->
+      <div class="dropdown">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenu5"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          Select the Therapy Type
+        </button><br></br>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu5">
+          <a class="dropdown-item" href="#" data-value="AAT">AAT</a>
+          <a class="dropdown-item" href="#" data-value="VVT">VVT</a>
+          <a class="dropdown-item" href="#" data-value="AOO">AOO</a>
+          <a class="dropdown-item" href="#" data-value="AAI">AAI</a>
+          <a class="dropdown-item" href="#" data-value="VOO">VOO</a>
+          <a class="dropdown-item" href="#" data-value="VVI">VVI</a>
+          <a class="dropdown-item" href="#" data-value="VDD">VDD</a>
+          <a class="dropdown-item" href="#" data-value="DOO">DOO</a>
+          <a class="dropdown-item" href="#" data-value="DDI">DDI</a>
+          <a class="dropdown-item" href="#" data-value="DDD">DDD</a>
+          <a class="dropdown-item" href="#" data-value="AOOR">AOOR</a>
+          <a class="dropdown-item" href="#" data-value="AAIR">AAIR</a>
+          <a class="dropdown-item" href="#" data-value="VVIR">VVIR</a>
+          <a class="dropdown-item" href="#" data-value="VDDR">VDDR</a>
+          <a class="dropdown-item" href="#" data-value="DOOR">DOOR</a>
+          <a class="dropdown-item" href="#" data-value="DDIR">DDIR</a>
+          <a class="dropdown-item" href="#" data-value="DDDR">DDDR</a>
+          <a class="dropdown-item" href="#" data-value="VOOR">VOOR</a>
+  
         </div>
+        <!-- Hidden input to hold the selected value -->
+        <input type="hidden" id="therapyType" name="therapy_type" value="" />
+      </div>
       <script>
-        function toggleInput(selectElement, inputId) {
-            const input = document.getElementById(inputId);
-            if (selectElement.value === 'On') {
-                input.style.display = 'inline';
+        // Ensure the hidden input is updated on selection
+        document.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.getElementById('therapyType').value = this.getAttribute('data-value');
+            });
+        });
+    </script>
+  
+      <!-- Parameter fields, only show relevant fields based on therapy mode -->
+      <div id="parameters">
+        <div id="parameters">
+          <!-- Lower Rate Limit (LRL) -->
+          <div data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+            <label for="lrl">Lower Rate Limit (LRL):</label>
+            <input type="number" id="lrl" name="lrl" min="30" max="175" step="5" value="30" />
+          </div>
+        </div>
+        
+        <script>
+          // JavaScript to adjust step and range based on value
+          const lrlInput = document.getElementById('lrl');
+        
+          lrlInput.addEventListener('input', function () {
+            const value = parseInt(lrlInput.value, 10);
+        
+            if (value < 50) {
+              lrlInput.step = 5;
+              lrlInput.min = 30;
+              lrlInput.max = 50;
+            } else if (value < 90) {
+              lrlInput.step = 1;
+              lrlInput.min = 50;
+              lrlInput.max = 90;
             } else {
-                input.style.display = 'none';
+              lrlInput.step = 5;
+              lrlInput.min = 90;
+              lrlInput.max = 175;
+            }
+          });
+        </script>      
+  
+        <div
+          data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"
+          class="parameter-field"
+        >
+          <label for="url">Upper Rate Limit (URL):</label>
+          <input type="number" id="lrl" name="lrl" min="50" max="175" step="5" value="50" />
+        </div>
+  
+        <div
+          data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"
+          class="parameter-field"
+        >
+          <label for="max_sensor_rate">Max Sensor Rate:</label>
+          <input type="number" id="lrl" name="lrl" min="50" max="175" step="5" value="50" />
+        </div>
+  
+        <div
+          data-therapy="VDD DOO DDI DDD VDDR DOOR DDIR DDDR"
+          class="parameter-field"
+        >
+          <label for="fixed_av_delay">Fixed AV Delay:</label>
+          <input type="number" id="lrl" name="lrl" min="70" max="300" step="10" value="70" />
+        </div>
+  
+        <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
+          <label for="dynamic_av_delay">Dynamic AV Delay:</label>
+          <select id="dynamic_av_delay_toggle" name="dynamic_av_delay_toggle">
+            <option value="Off">Off</option>
+            <option value="On">On</option>
+          </select>
+        </div>
+  
+        <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
+          <label for="dynamic_av_delay">Minimum Dynamic AV Delay:</label>
+          <input type="number" id="lrl" name="lrl" min="30" max="100" step="10" value="30" />
+        </div>
+  
+        <div data-therapy="DDD DDDR" class="parameter-field">
+          <label for="sensed_av_delay_offset">Sensed AV Delay Offset:</label>
+          <div id="sensed_av_delay_offset_container">
+              <select id="sensed_av_delay_toggle" name="sensed_av_delay_toggle" onchange="toggleInput(this, 'sensed_av_delay_value')">
+                  <option value="Off">Off</option>
+                  <option value="On">Set Value</option>
+              </select>
+              
+              <input type="number" id="sensed_av_delay_value" name="sensed_av_delay_value" min="-100" max="-10" step="10" value="-10" style="display:none;" />
+          </div>
+        <script>
+          function toggleInput(selectElement, inputId) {
+              const input = document.getElementById(inputId);
+              if (selectElement.value === 'On') {
+                  input.style.display = 'inline';
+              } else {
+                  input.style.display = 'none';
+              }
+          }
+      </script>  
+      
+      <div data-therapy="AAT AOO AAI DOO DDI DDD AOOR AAIR DOOR DDIR DDDR" class="parameter-field">
+        <label for="atrial_pulse_amp">Atrial Pulse Amplitude:</label>
+        <div id="atrial_pulse_amp_container">
+            <select id="atrial_pulse_amp_toggle" name="atrial_pulse_amp_toggle" onchange="toggleAtrialInput(this)">
+                <option value="regulated_off">Off</option>
+                <option value="regulated_set">Regulated - Set Value</option>
+                <option value="unregulated_set">Unregulated - Set Value</option>
+            </select>
+    
+            <!-- Number input for regulated set value (0.1 - 5V with step of 0.1V) -->
+            <input type="number" id="atrial_pulse_amp_value" name="atrial_pulse_amp_value" min="0.1" max="5" step="0.1" value="0.1" style="display:none;" />
+    
+            <!-- Number input for unregulated set value (1.25 - 5 with step of 1.25) -->
+            <input type="number" id="unregulated_value" name="atrial_pulse_amp_value" min="1.25" max="5" step="1.25" value="1.25" style="display:none;" />
+        </div>
+    </div>
+    
+    <script>
+        function toggleAtrialInput(selectElement) {
+            const regulatedInput = document.getElementById('atrial_pulse_amp_value');
+            const unregulatedInput = document.getElementById('unregulated_value');
+    
+            if (selectElement.value === 'regulated_set') {
+                regulatedInput.style.display = 'inline';
+                unregulatedInput.style.display = 'none';
+            } else if (selectElement.value === 'unregulated_set') {
+                regulatedInput.style.display = 'none';
+                unregulatedInput.style.display = 'inline';
+            } else {
+                regulatedInput.style.display = 'none';
+                unregulatedInput.style.display = 'none';
             }
         }
-    </script>  
+    </script>
     
-    <div data-therapy="AAT AOO AAI DOO DDI DDD AOOR AAIR DOOR DDIR DDDR" class="parameter-field">
-      <label for="atrial_pulse_amp">Atrial Pulse Amplitude:</label>
-      <div id="atrial_pulse_amp_container">
-          <select id="atrial_pulse_amp_toggle" name="atrial_pulse_amp_toggle" onchange="toggleAtrialInput(this)">
+    
+    <div data-therapy="VVT VOO VVI VDD DOO DDI DDD VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+      <label for="ventricular_amp">Ventricular Amplitude:</label>
+      <div id="ventricular_amp_container">
+          <select id="ventricular_amp_toggle" name="ventricular_amp_toggle" onchange="toggleInput(this)">
               <option value="regulated_off">Off</option>
               <option value="regulated_set">Regulated - Set Value</option>
               <option value="unregulated_set">Unregulated - Set Value</option>
           </select>
   
           <!-- Number input for regulated set value (0.1 - 5V with step of 0.1V) -->
-          <input type="number" id="atrial_pulse_amp_value" name="atrial_pulse_amp_value" min="0.1" max="5" step="0.1" value="0.1" style="display:none;" />
+          <input type="number" id="ventricular_amp_value" name="ventricular_amp_value" min="0.1" max="5" step="0.1" value="0.1" style="display:none;" />
   
           <!-- Number input for unregulated set value (1.25 - 5 with step of 1.25) -->
-          <input type="number" id="unregulated_value" name="atrial_pulse_amp_value" min="1.25" max="5" step="1.25" value="1.25" style="display:none;" />
+          <input type="number" id="ventricular_unregulated_value" name="ventricular_amp_value" min="1.25" max="5" step="1.25" value="1.25" style="display:none;" />
       </div>
   </div>
   
   <script>
-      function toggleAtrialInput(selectElement) {
-          const regulatedInput = document.getElementById('atrial_pulse_amp_value');
-          const unregulatedInput = document.getElementById('unregulated_value');
+      function toggleInput(selectElement) {
+          const regulatedInput = document.getElementById('ventricular_amp_value');
+          const unregulatedInput = document.getElementById('ventricular_unregulated_value');
   
           if (selectElement.value === 'regulated_set') {
               regulatedInput.style.display = 'inline';
@@ -303,289 +339,254 @@ block content %}
       }
   </script>
   
+        <div
+          data-therapy="AAT AOO AAI DOO DDI DDD AOOR AAIR DOOR DDIR DDDR"
+          class="parameter-field"
+        >
+          <label for="atrial_pulse_width">Atrial Pulse Width:</label>
+          <input type="number" id="lrl" name="lrl" min="1" max="30" step="1" value="1" />
+        </div>
   
-  <div data-therapy="VVT VOO VVI VDD DOO DDI DDD VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-    <label for="ventricular_amp">Ventricular Amplitude:</label>
-    <div id="ventricular_amp_container">
-        <select id="ventricular_amp_toggle" name="ventricular_amp_toggle" onchange="toggleInput(this)">
-            <option value="regulated_off">Off</option>
-            <option value="regulated_set">Regulated - Set Value</option>
-            <option value="unregulated_set">Unregulated - Set Value</option>
-        </select>
-
-        <!-- Number input for regulated set value (0.1 - 5V with step of 0.1V) -->
-        <input type="number" id="ventricular_amp_value" name="ventricular_amp_value" min="0.1" max="5" step="0.1" value="0.1" style="display:none;" />
-
-        <!-- Number input for unregulated set value (1.25 - 5 with step of 1.25) -->
-        <input type="number" id="ventricular_unregulated_value" name="ventricular_amp_value" min="1.25" max="5" step="1.25" value="1.25" style="display:none;" />
-    </div>
-</div>
-
-<script>
-    function toggleInput(selectElement) {
-        const regulatedInput = document.getElementById('ventricular_amp_value');
-        const unregulatedInput = document.getElementById('ventricular_unregulated_value');
-
-        if (selectElement.value === 'regulated_set') {
-            regulatedInput.style.display = 'inline';
-            unregulatedInput.style.display = 'none';
-        } else if (selectElement.value === 'unregulated_set') {
-            regulatedInput.style.display = 'none';
-            unregulatedInput.style.display = 'inline';
-        } else {
-            regulatedInput.style.display = 'none';
-            unregulatedInput.style.display = 'none';
-        }
-    }
-</script>
-
-      <div
-        data-therapy="AAT AOO AAI DOO DDI DDD AOOR AAIR DOOR DDIR DDDR"
-        class="parameter-field"
-      >
-        <label for="atrial_pulse_width">Atrial Pulse Width:</label>
-        <input type="number" id="lrl" name="lrl" min="1" max="30" step="1" value="1" />
-      </div>
-
-      <div data-therapy="VVT VOO VVI VDD DOO DDI DDD VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-        <label for="ventricular_pulse_width">Ventricular Pulse Width:</label>
-        <input type="number" id="lrl" name="lrl" min="1" max="30" step="1" value="1" />
-      </div>
-
-      <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
-        <label for="atrial_sensitivity">Atrial Sensitivity:</label>
-        <input type="number" id="lrl" name="lrl" min="0" max="5" step="0.1" value="0" />
-      </div>
-
-      <div data-therapy="VVT VVI VDD DDI DDD VVIR VDDR DDIR DDDR" class="parameter-field">
-        <label for="ventricular_sensitivity">Ventricular Sensitivity:</label>
-        <input type="number" id="lrl" name="lrl" min="0" max="5" step="0.1" value="0" />
-      </div>
-
-      <div data-therapy="VVT VVI VDD DDI DDD VVIR VDDR DDIR DDDR" class="parameter-field">
-        <label for="vrp">Ventricular Refractory Period (VRP):</label>
-        <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
-      </div>
-
-      <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
-        <label for="arp">Atrial Refractory Period (ARP):</label>
-        <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
-      </div>
-
-      <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
-        <label for="pvarp">Post Ventricular Atrial Refractory Period (PVARP):</label>
-        <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
-      </div>
-      <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
-        <label for="pvarp_ext">PVARP Extension:</label>
-        <select id="pvarp_extension_toggle" name="pvarp_extension_toggle" onchange="togglePVARPExtension(this)">
-            <option value="Off">Off</option>
-            <option value="On">Set Value</option>
-        </select>
-    
-        <!-- Range input for Set Value option, initially hidden -->
-        <input type="number" id="pvarp_extension_value" name="pvarp_extension_value" min="150" max="500" step="10" value="150" style="display:none;" />
-    </div>
-    
-    <script>
-        // Function to toggle the display of the PVARP Extension input field
-        function togglePVARPExtension(selectElement) {
-            const pvarpInput = document.getElementById('pvarp_extension_value');
-            
-            if (selectElement.value === 'On') {
-                pvarpInput.style.display = 'inline';
-            } else {
-                pvarpInput.style.display = 'none';
-            }
-        }
-    </script>
-    
-      <div data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR VOOR" class="parameter-field">
-        <label for="hysteresis_rate_limit">Hysteresis Rate Limit:</label>
-        <select id="hysteresis_rate_limit_toggle" name="hysteresis_rate_limit_toggle" onchange="toggleHysteresisInput(this)">
-            <option value="Off">Off</option>
-            <option value="On">Set Value</option>
-        </select>
-        
-        <input type="number" id="hysteresis_rate_limit_value" name="hysteresis_rate_limit_value" min="30" max="175" step="5" value="30" style="display:none;" />
-    </div>
-    
-    <script>
-        // Function to toggle the display of the Hysteresis Rate Limit input field
-        function toggleHysteresisInput(selectElement) {
-            const hysteresisInput = document.getElementById('hysteresis_rate_limit_value');
-            if (selectElement.value === 'On') {
-                hysteresisInput.style.display = 'inline';
-            } else {
-                hysteresisInput.style.display = 'none';
-            }
-        }
-    
-        // Function to adjust Hysteresis Rate Limit input range and step independently
-        const hysteresisInput = document.getElementById('hysteresis_rate_limit_value');
-        hysteresisInput.addEventListener('input', function () {
-            adjustHysteresisRange(hysteresisInput);
-        });
-    
-        function adjustHysteresisRange(inputElement) {
-            const value = parseInt(inputElement.value, 10);
-    
-            if (value < 50) {
-                inputElement.step = 5;
-                inputElement.min = 30;
-                inputElement.max = 50;
-            } else if (value < 90) {
-                inputElement.step = 1;
-                inputElement.min = 50;
-                inputElement.max = 90;
-            } else {
-                inputElement.step = 5;
-                inputElement.min = 90;
-                inputElement.max = 175;
-            }
-        }
-    </script>
-
-       <!--ATR MODE - NEW PARAMETER-->
-        <label for="atr_duration">ATR Mode:</label>
-        <select id="atr_duration_toggle" name="atr_duration_toggle">
-          <option value="Off">Off</option>
-          <option value="On">On</option>
-        </select>
+        <div data-therapy="VVT VOO VVI VDD DOO DDI DDD VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+          <label for="ventricular_pulse_width">Ventricular Pulse Width:</label>
+          <input type="number" id="lrl" name="lrl" min="1" max="30" step="1" value="1" />
+        </div>
   
-
-      <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
-          <label for="atr_duration">ATR Duration (Cardiac Cycles):</label>
-          <input type="number" id="atr_duration" name="atr_duration" min="10" max="2000" step="1" value="10" />
+        <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
+          <label for="atrial_sensitivity">Atrial Sensitivity:</label>
+          <input type="number" id="lrl" name="lrl" min="0" max="5" step="0.1" value="0" />
+        </div>
+  
+        <div data-therapy="VVT VVI VDD DDI DDD VVIR VDDR DDIR DDDR" class="parameter-field">
+          <label for="ventricular_sensitivity">Ventricular Sensitivity:</label>
+          <input type="number" id="lrl" name="lrl" min="0" max="5" step="0.1" value="0" />
+        </div>
+  
+        <div data-therapy="VVT VVI VDD DDI DDD VVIR VDDR DDIR DDDR" class="parameter-field">
+          <label for="vrp">Ventricular Refractory Period (VRP):</label>
+          <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
+        </div>
+  
+        <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
+          <label for="arp">Atrial Refractory Period (ARP):</label>
+          <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
+        </div>
+  
+        <div data-therapy="AAT AAI DDI DDD AAIR DDIR DDDR" class="parameter-field">
+          <label for="pvarp">Post Ventricular Atrial Refractory Period (PVARP):</label>
+          <input type="number" id="lrl" name="lrl" min="150" max="500" step="10" value="150" />
+        </div>
+        <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
+          <label for="pvarp_ext">PVARP Extension:</label>
+          <select id="pvarp_extension_toggle" name="pvarp_extension_toggle" onchange="togglePVARPExtension(this)">
+              <option value="Off">Off</option>
+              <option value="On">Set Value</option>
+          </select>
+      
+          <!-- Range input for Set Value option, initially hidden -->
+          <input type="number" id="pvarp_extension_value" name="pvarp_extension_value" min="150" max="500" step="10" value="150" style="display:none;" />
       </div>
       
       <script>
-          // JavaScript to adjust ATR Duration range and step based on value
-          const atrDurationInput = document.getElementById('atr_duration');
-      
-          atrDurationInput.addEventListener('input', function () {
-              adjustATRRanges();
-          });
-      
-          function adjustATRRanges() {
-              const value = parseInt(atrDurationInput.value, 10);
-      
-              if (value < 20) {
-                  atrDurationInput.min = 10;
-                  atrDurationInput.max = 20;
-                  atrDurationInput.step = 10;
-              } else if (value < 80) {
-                  atrDurationInput.min = 20;
-                  atrDurationInput.max = 80;
-                  atrDurationInput.step = 20;
+          // Function to toggle the display of the PVARP Extension input field
+          function togglePVARPExtension(selectElement) {
+              const pvarpInput = document.getElementById('pvarp_extension_value');
+              
+              if (selectElement.value === 'On') {
+                  pvarpInput.style.display = 'inline';
               } else {
-                  atrDurationInput.min = 100;
-                  atrDurationInput.max = 2000;
-                  atrDurationInput.step = 100;
+                  pvarpInput.style.display = 'none';
               }
           }
-      </script>      
-
-      <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
-        <label for="atr_fallback_time">ATR Fallback Time:</label>
-        <input type="number" id="lrl" name="lrl" min="1" max="5" step="1" value="1" />
-      </div>
-
-      <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-          <label for="activity_threshold">Activity Threshold:</label>
-          <select id="activity_threshold" name="activity_threshold">
-              <option value="V-Low">V-Low</option>
-              <option value="Low">Low</option>
-              <option value="Med-Low">Med-Low</option>
-              <option value="Med">Med</option>
-              <option value="Med-High">Med-High</option>
-              <option value="High">High</option>
-              <option value="V-High">V-High</option>
+      </script>
+      
+        <div data-therapy="AAT VVT AOO AAI VOO VVI VDD DOO DDI DDD AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR VOOR" class="parameter-field">
+          <label for="hysteresis_rate_limit">Hysteresis Rate Limit:</label>
+          <select id="hysteresis_rate_limit_toggle" name="hysteresis_rate_limit_toggle" onchange="toggleHysteresisInput(this)">
+              <option value="Off">Off</option>
+              <option value="On">Set Value</option>
           </select>
+          
+          <input type="number" id="hysteresis_rate_limit_value" name="hysteresis_rate_limit_value" min="30" max="175" step="5" value="30" style="display:none;" />
       </div>
-
-      <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-        <label for="reaction_time">Reaction Time:</label>
-        <input type="number" id="lrl" name="lrl" min="10" max="50" step="10" value="10" />
-      </div>
-
-      <div data-therapy= "AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"class="parameter-field">
-        <label for="response_factor">Response Factor:</label>
-        <input type="number" id="lrl" name="lrl" min="1" max="16" step="1" value="1" />
-      </div>
-
-      <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
-        <label for="recovery_time">Recovery Time:</label>
-        <input type="number" id="lrl" name="lrl" min="2" max="16" step="1" value="1" />
-      </div>
-    </div>
-    <br></br>
-    <input type="submit" value="Submit" class="submit-button" />
-  </form>
-
-</body>
-<script>
- document.addEventListener("DOMContentLoaded", function () {
-    const submitButton = document.getElementById("submit-button");
-    const dropdownMenu = document.getElementById("dropdownMenu5");
-    const hiddenInput = document.getElementById("therapyType");
-    const dropdownItems = document.querySelectorAll(".dropdown-item");
-    const parameterFields = document.querySelectorAll(".parameter-field"); // All parameter fields with `data-therapy`
-
-    // Handle dropdown selection
-    dropdownItems.forEach(item => {
-        item.addEventListener("click", function () {
-            const selectedTherapy = this.getAttribute("data-value"); // Get selected therapy type
-            hiddenInput.value = selectedTherapy; // Update hidden input value
-            dropdownMenu.innerText = this.innerText; // Update dropdown text
-
-            // Show or hide parameter fields based on the selected therapy
-            parameterFields.forEach(field => {
-                const therapies = field.getAttribute("data-therapy").split(" "); // Get applicable therapies
-                if (therapies.includes(selectedTherapy)) {
-                    field.style.display = "block"; // Show if therapy matches
-                } else {
-                    field.style.display = "none"; // Hide if therapy doesn't match
-                }
+      
+      <script>
+          // Function to toggle the display of the Hysteresis Rate Limit input field
+          function toggleHysteresisInput(selectElement) {
+              const hysteresisInput = document.getElementById('hysteresis_rate_limit_value');
+              if (selectElement.value === 'On') {
+                  hysteresisInput.style.display = 'inline';
+              } else {
+                  hysteresisInput.style.display = 'none';
+              }
+          }
+      
+          // Function to adjust Hysteresis Rate Limit input range and step independently
+          const hysteresisInput = document.getElementById('hysteresis_rate_limit_value');
+          hysteresisInput.addEventListener('input', function () {
+              adjustHysteresisRange(hysteresisInput);
+          });
+      
+          function adjustHysteresisRange(inputElement) {
+              const value = parseInt(inputElement.value, 10);
+      
+              if (value < 50) {
+                  inputElement.step = 5;
+                  inputElement.min = 30;
+                  inputElement.max = 50;
+              } else if (value < 90) {
+                  inputElement.step = 1;
+                  inputElement.min = 50;
+                  inputElement.max = 90;
+              } else {
+                  inputElement.step = 5;
+                  inputElement.min = 90;
+                  inputElement.max = 175;
+              }
+          }
+      </script>
+  
+         <!--ATR MODE - NEW PARAMETER-->
+          <label for="atr_duration">ATR Mode:</label>
+          <select id="atr_duration_toggle" name="atr_duration_toggle">
+            <option value="Off">Off</option>
+            <option value="On">On</option>
+          </select>
+    
+  
+        <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
+            <label for="atr_duration">ATR Duration (Cardiac Cycles):</label>
+            <input type="number" id="atr_duration" name="atr_duration" min="10" max="2000" step="1" value="10" />
+        </div>
+        
+        <script>
+            // JavaScript to adjust ATR Duration range and step based on value
+            const atrDurationInput = document.getElementById('atr_duration');
+        
+            atrDurationInput.addEventListener('input', function () {
+                adjustATRRanges();
             });
-        });
-    });
-
-    // Handle form submission
-    submitButton.addEventListener("click", function (event) {
-        event.preventDefault(); // Prevent default form submission
-
-        // Gather form data
-        const formData = {
-            mode: hiddenInput.value,
-            LRL: document.getElementById("lrl").value,
-            URL: document.getElementById("url").value,
-            AV_Delay: document.getElementById("av_delay").value,
-            A_Amplitude: document.getElementById("a_amplitude").value,
-            V_Amplitude: document.getElementById("v_amplitude").value
-        };
-
-        // Send data to the backend
-        fetch("/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(result => {
-            alert(result.message); // Display backend response
-        })
-        .catch(error => {
-            console.error("Error:", error); // Log error for debugging
-        });
-    });
-
-    // Trigger the click event for the first dropdown item on page load (optional)
-    if (dropdownItems.length > 0) {
-        dropdownItems[0].click();
-    }
-});
-
-</script>
-</body>
-{% endblock %}
+        
+            function adjustATRRanges() {
+                const value = parseInt(atrDurationInput.value, 10);
+        
+                if (value < 20) {
+                    atrDurationInput.min = 10;
+                    atrDurationInput.max = 20;
+                    atrDurationInput.step = 10;
+                } else if (value < 80) {
+                    atrDurationInput.min = 20;
+                    atrDurationInput.max = 80;
+                    atrDurationInput.step = 20;
+                } else {
+                    atrDurationInput.min = 100;
+                    atrDurationInput.max = 2000;
+                    atrDurationInput.step = 100;
+                }
+            }
+        </script>      
+  
+        <div data-therapy="VDD DDD VDDR DDDR" class="parameter-field">
+          <label for="atr_fallback_time">ATR Fallback Time:</label>
+          <input type="number" id="lrl" name="lrl" min="1" max="5" step="1" value="1" />
+        </div>
+  
+        <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+            <label for="activity_threshold">Activity Threshold:</label>
+            <select id="activity_threshold" name="activity_threshold">
+                <option value="V-Low">V-Low</option>
+                <option value="Low">Low</option>
+                <option value="Med-Low">Med-Low</option>
+                <option value="Med">Med</option>
+                <option value="Med-High">Med-High</option>
+                <option value="High">High</option>
+                <option value="V-High">V-High</option>
+            </select>
+        </div>
+  
+        <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+          <label for="reaction_time">Reaction Time:</label>
+          <input type="number" id="lrl" name="lrl" min="10" max="50" step="10" value="10" />
+        </div>
+  
+        <div data-therapy= "AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR"class="parameter-field">
+          <label for="response_factor">Response Factor:</label>
+          <input type="number" id="lrl" name="lrl" min="1" max="16" step="1" value="1" />
+        </div>
+  
+        <div data-therapy="AOOR AAIR VOOR VVIR VDDR DOOR DDIR DDDR" class="parameter-field">
+          <label for="recovery_time">Recovery Time:</label>
+          <input type="number" id="lrl" name="lrl" min="2" max="16" step="1" value="1" />
+        </div>
+      </div>
+      <br></br>
+      <input type="submit" value="Submit" class="submit-button" />
+    </form>
+  
+  </body>
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+      const submitButton = document.getElementById("submit-button");
+      const dropdownMenu = document.getElementById("dropdownMenu5");
+      const hiddenInput = document.getElementById("therapyType");
+      const dropdownItems = document.querySelectorAll(".dropdown-item");
+      const parameterFields = document.querySelectorAll(".parameter-field"); // All parameter fields with `data-therapy`
+  
+      // Handle dropdown selection
+      dropdownItems.forEach(item => {
+          item.addEventListener("click", function () {
+              const selectedTherapy = this.getAttribute("data-value"); // Get selected therapy type
+              hiddenInput.value = selectedTherapy; // Update hidden input value
+              dropdownMenu.innerText = this.innerText; // Update dropdown text
+  
+              // Show or hide parameter fields based on the selected therapy
+              parameterFields.forEach(field => {
+                  const therapies = field.getAttribute("data-therapy").split(" "); // Get applicable therapies
+                  if (therapies.includes(selectedTherapy)) {
+                      field.style.display = "block"; // Show if therapy matches
+                  } else {
+                      field.style.display = "none"; // Hide if therapy doesn't match
+                  }
+              });
+          });
+      });
+  
+      // Handle form submission
+      submitButton.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevent default form submission
+  
+          // Gather form data
+          const formData = {
+              mode: hiddenInput.value,
+              LRL: document.getElementById("lrl").value,
+              URL: document.getElementById("url").value,
+              AV_Delay: document.getElementById("av_delay").value,
+              A_Amplitude: document.getElementById("a_amplitude").value,
+              V_Amplitude: document.getElementById("v_amplitude").value
+          };
+  
+          // Send data to the backend
+          fetch("/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData)
+          })
+          .then(response => response.json())
+          .then(result => {
+              alert(result.message); // Display backend response
+          })
+          .catch(error => {
+              console.error("Error:", error); // Log error for debugging
+          });
+      });
+  
+      // Trigger the click event for the first dropdown item on page load (optional)
+      if (dropdownItems.length > 0) {
+          dropdownItems[0].click();
+      }
+  });
+  
+  </script>
+  </body>
+  {% endblock %}
+  
