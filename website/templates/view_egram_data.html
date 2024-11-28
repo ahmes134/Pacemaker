@@ -1,57 +1,117 @@
-{% extends "base.html" %} {% block title %}View Egram{% endblock %} {% block
-content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <style>
-      .egram-page {
-        font-family: Arial, sans-serif;
-        margin: 0 auto;
-        padding: 20px;
-        width: 90%;
-        max-width: 1200px;
-      }
-
-      .page-header {
-        text-align: center;
-        margin-top: 20px;
-      }
-
-      .page-header h1 {
-        font-size: 36px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 10px;
-        border-bottom: 4px solid #c42727;
-        padding-bottom: 10px;
-      }
-
-      .page-header h2 {
-        font-size: 28px;
-        font-weight: 400;
-        color: #555;
-        margin-top: 0;
-        margin-bottom: 20px;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
-      }
-
-      th {
-        background-color: #f2f2f2;
-      }
-    </style>
- 
- 
-  {% endblock %}
+{% extends "base.html" %} {% block title %} View Egram {% endblock %} {% block
+  content %}
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+      <style>
+        .egram-page {
+          font-family: Arial, sans-serif;
+          margin: 0 auto;
+          padding: 20px;
+          width: 90%;
+          max-width: 1200px;
+        }
   
+        .page-header {
+          text-align: center;
+          margin-top: 20px;
+        }
+  
+        .page-header h1 {
+          font-size: 36px;
+          font-weight: 700;
+          color: #333;
+          margin-bottom: 10px;
+          border-bottom: 4px solid #c42727;
+          padding-bottom: 10px;
+        }
+  
+        .page-header h2 {
+          font-size: 28px;
+          font-weight: 400;
+          color: #555;
+          margin-top: 0;
+          margin-bottom: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="egram-page">
+        <div class="page-header">
+          <h1>Live Egram Monitoring</h1>
+          <h2>Real-time voltage data visualization</h2>
+        </div>
+        <div id="chart" style="width: 100%; height: 500px"></div>
+        <form action="/export" method="post">
+          <button type="submit" class="btn btn-primary btn-block btn-lg">
+            Export To CSV
+          </button>
+        </form>
+      </div>
+  
+      <script>
+        var atriumData = [];
+        var ventricalData = [];
+        var timeData = [];
+        var layout = {
+          title: "Live Egram Data",
+          xaxis: { title: "Time", showgrid: true },
+          yaxis: { title: "Voltage (V)", range: [0, 5], showgrid: true },
+        };
+  
+        Plotly.newPlot(
+          "chart",
+          [
+            { x: timeData, y: atriumData, type: "scatter", name: "Atrium" },
+            { x: timeData, y: ventricalData, type: "scatter", name: "Ventrical" },
+          ],
+          layout
+        );
+  
+        // Simulate real-time data using setInterval (every 2 seconds)
+        setInterval(function () {
+          // Dummy data for atrium and ventrical voltages
+          var atriumVoltage = Math.random() * 3 + 1; // Random value between 1 and 4
+          var ventricalVoltage = Math.random() * 3 + 1; // Random value between 1 and 4
+          var currentTime = new Date().toLocaleTimeString(); // Current time as x-axis
+  
+          // Push the new data to the arrays
+          atriumData.push(atriumVoltage);
+          ventricalData.push(ventricalVoltage);
+          timeData.push(currentTime);
+  
+          // Update the chart with new data
+          Plotly.update("chart", {
+            x: [timeData, timeData],
+            y: [atriumData, ventricalData],
+          });
+        }, 2000); // Update every 2 seconds
+  
+        // Uncomment the following code to enable Socket.IO connection
+  
+        /*
+        // Connect to Socket.IO (replace with your backend URL if different)
+        var socket = io();
+  
+        // Listen for 'update_data' event from backend
+        socket.on("update_data", function (data) {
+          var currentTime = new Date().toLocaleTimeString();
+          
+          // Push received data to the arrays
+          atriumData.push(data.atrium);
+          ventricalData.push(data.ventrical);
+          timeData.push(currentTime);
+  
+          // Update the chart with new data
+          Plotly.update("chart", {
+            x: [timeData, timeData],
+            y: [atriumData, ventricalData],
+          });
+        });
+        */
+      </script>
+    </body>
+  </html>
+  {% endblock %}
