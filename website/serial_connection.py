@@ -49,7 +49,7 @@ class SerialCommunication:
                 self.serial_conn = None
         return False
 
-    def sendSerial(self, mode, LRL, URL, Max_Sensor_Rate, AV_Delay, A_Amplitude, V_Amplitude, A_Pulse_Width, V_Pulse_Width, A_Sensitivity, V_Sensitivity, VRP, ARP, PVARP, Activity_Threshold, Reaction_Time, Response_Factor, Recovery_Time, Function_Call, port):
+    def sendSerial(self, mode, LRL, URL, Max_Sensor_Rate, AV_Delay, A_Amplitude, V_Amplitude, A_Pulse_Width, V_Pulse_Width, A_Sensitivity, V_Sensitivity, VRP, ARP, PVARP, Activity_Threshold, Reaction_Time, Response_Factor, Recovery_Time, port):
         """
         Sends formatted serial data to the pacemaker device.
         """
@@ -71,6 +71,18 @@ class SerialCommunication:
             'DOOR': 10
         }
 
+        #activity_threshold_map
+        self.activity_threshold_map = {
+            'V-Low': 0,
+            'Low': 1,
+            'Med-Low': 2,
+            'Med': 3,
+            'Med-High': 4,
+            'High': 5,
+            'V-High': 6
+        }
+        
+
          # Retrieve mode value from the map
         if mode not in self.mode_map:
             print(f"Error: Invalid mode '{mode}'.")
@@ -78,6 +90,13 @@ class SerialCommunication:
 
         mode_value = self.mode_map[mode]
         print(f"Using mode: {mode} ({mode_value})")
+
+        if Activity_Threshold not in self.activity_threshold_map:
+            print(f"Error: Invalid Activity Threshold '{Activity_Threshold}'.")
+            return
+        activity_threshold_value = self.activity_threshold_map[Activity_Threshold]
+        print(f"Using Activity Threshold: {Activity_Threshold} ({activity_threshold_value})")
+
         
         def safe_int(value, default=0):
             """
@@ -106,7 +125,6 @@ class SerialCommunication:
             Reaction_Time = safe_int(Reaction_Time)
             Response_Factor = safe_int(Response_Factor)
             Recovery_Time = safe_int(Recovery_Time)
-            Function_Call = safe_int(Function_Call)
             A_Amplitude =  safe_int(A_Amplitude)
             V_Amplitude =  safe_int(V_Amplitude)
             A_Pulse_Width = safe_int(A_Pulse_Width)
@@ -122,14 +140,14 @@ class SerialCommunication:
         try:
             serial_com = st.pack(
                 mode_value, LRL, URL, Max_Sensor_Rate, AV_Delay, A_Amplitude, V_Amplitude, A_Pulse_Width, V_Pulse_Width,
-                A_Sensitivity, V_Sensitivity, VRP, ARP, PVARP, Activity_Threshold, Reaction_Time,
-                Response_Factor, Recovery_Time, Function_Call,0
+                A_Sensitivity, V_Sensitivity, VRP, ARP, PVARP, activity_threshold_value, Reaction_Time,
+                Response_Factor, Recovery_Time, 0, 0
             )
 
             # Log the parameters being sent
             print("\nTransmitting the following parameters:")
             print(
-                f"Mode: {mode}, LRL: {LRL}, URL: {URL}, Max Sensor Rate: {Max_Sensor_Rate}")
+                f"Mode: {mode_value}, LRL: {LRL}, URL: {URL}, Max Sensor Rate: {Max_Sensor_Rate}")
             print(
                 f"AV Delay: {AV_Delay}, Atrial Amplitude: {A_Amplitude}, Ventricular Amplitude: {V_Amplitude}")
             print(
@@ -138,14 +156,11 @@ class SerialCommunication:
                 f"Atrial Sensitivity: {A_Sensitivity}, Ventricular Sensitivity: {V_Sensitivity}")
             print(f"VRP: {VRP}, ARP: {ARP}, PVARP: {PVARP}")
             print(
-                f" Activity Threshold: {Activity_Threshold}")
+                f" Activity Threshold: {activity_threshold_value}")
             print(
                 f"Reaction Time: {Reaction_Time}, Response Factor: {Response_Factor}, Recovery Time: {Recovery_Time}")
             print(
-                f"A_Amplitude: {A_Amplitude}, V_Amplitude: {V_Amplitude}")
-            print(
                 f"A_Pulse_Width: {A_Pulse_Width}, V_Pulse_Width: {V_Pulse_Width}")
-            print(f"Function Call: {Function_Call}, Port: {port}")
 
             # Send data to the pacemaker
             try:
@@ -158,6 +173,9 @@ class SerialCommunication:
 
         except struct.error as e:
             print(f"Error in struct packing: {e}")
+
+            print(f"Mode: {mode_value} (Type: {type(mode_value)})")
+            
         except Exception as e:
             print(f"Error in transmitting data: {e}")
 

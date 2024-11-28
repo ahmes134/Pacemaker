@@ -131,6 +131,7 @@ def bradycardia_therapy():
             print(f"Recovery Time: {recovery_time}")
             
             print(f"Received therapy type: {therapy_type}")
+            
 
             if therapy_type not in serial_conn.mode_map:
                 print(f"Invalid therapy type: {therapy_type}")
@@ -159,7 +160,6 @@ def bradycardia_therapy():
                 Reaction_Time=reaction_time,
                 Response_Factor=response_factor,
                 Recovery_Time=recovery_time,
-                Function_Call=1,  # Example function call
                 port="/dev/cu.usbmodem21103"  # Update with your COM port
             )
 
