@@ -530,87 +530,50 @@ block content %}
     <input type="submit" value="Submit" class="submit-button" />
   </form>
 </body>
-
 <script>
-  // Get the dropdown button and the hidden input field
-  const dropdownButton = document.getElementById('dropdownMenu5');
-  const hiddenInput = document.getElementById('therapyType');
+  document.addEventListener("DOMContentLoaded", function () {
+      const submitButton = document.getElementById("submit-button");
+      const dropdownMenu = document.getElementById("dropdownMenu5");
+      const hiddenInput = document.getElementById("therapyType");
+      const dropdownItems = document.querySelectorAll(".dropdown-item");
 
-  // Get all the dropdown items
-  const dropdownItems = document.querySelectorAll('.dropdown-item');
-
-  // Add click event listeners to each dropdown item
-  dropdownItems.forEach(item => {
-    item.addEventListener('click', function () {
-      // Change the button text to the selected therapy type
-      dropdownButton.innerText = this.innerText;
-
-      // Set the value of the hidden input to the selected therapy type
-      hiddenInput.value = this.getAttribute('data-value');
-    });
-  });
-
-
-
-
-  // JavaScript to toggle parameter fields based on selected therapy type
-  document.querySelectorAll(".dropdown-item").forEach((item) => {
-    item.addEventListener("click", function (event) {
-      event.preventDefault();
-      const selectedTherapy = this.getAttribute("data-value");
-      document.getElementById("therapyType").value = selectedTherapy;
-
-      // Show/Hide fields based on selected therapy type
-      document.querySelectorAll(".parameter-field").forEach((field) => {
-        const therapies = field.getAttribute("data-therapy").split(" ");
-        if (therapies.includes(selectedTherapy)) {
-          field.style.display = "block";
-        } else {
-          field.style.display = "none";
-        }
+      // Handle dropdown selection
+      dropdownItems.forEach(item => {
+          item.addEventListener("click", function () {
+              dropdownMenu.innerText = this.innerText;  // Set button text
+              hiddenInput.value = this.getAttribute("data-value");  // Set hidden input
+          });
       });
-    });
-  });
 
-  // Initially hide all parameter fields
-  document.querySelectorAll(".parameter-field").forEach((field) => {
-    field.style.display = "none";
-  });
-</script>
+      // Handle form submission
+      submitButton.addEventListener("click", function (event) {
+          event.preventDefault();  // Prevent default form submission
 
-<script>
-  document.querySelector(".submit-button").addEventListener("click", function (event) {
-    event.preventDefault(); // Prevent default form submission
+          // Gather form data
+          const formData = {
+              mode: hiddenInput.value,
+              LRL: document.getElementById("lrl").value,
+              URL: document.getElementById("url").value,
+              AV_Delay: document.getElementById("av_delay").value,
+              A_Amplitude: document.getElementById("a_amplitude").value,
+              V_Amplitude: document.getElementById("v_amplitude").value
+          };
 
-    // Collect data from the form
-    const therapyType = document.getElementById("therapyType").value;
-    const parameters = Array.from(document.querySelectorAll(".parameter-field input, .parameter-field select"))
-      .filter((input) => input.style.display !== "none") // Only collect visible inputs
-      .reduce((acc, input) => {
-        acc[input.name] = input.value;
-        return acc;
-      }, {});
-
-    // Combine therapyType with parameters
-    const data = {
-      therapyType,
-      parameters,
-    };
-
-    // Send data to the server
-    fetch("/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("Success:", result);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+          // Send data to the backend
+          fetch("/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData)
+          })
+          .then(response => response.json())
+          .then(result => {
+              alert(result.message);  // Display backend response
+          })
+          .catch(error => {
+              console.error("Error:", error);  // Log error for debugging
+          });
       });
   });
 </script>
-
+</body>
 {% endblock %}

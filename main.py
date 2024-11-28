@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from website.views import views
 from website.models import db
-from serial_connection import SerialCommunication
+##from website.serial_connection import SerialCommunication
 
 
 app = create_app()
