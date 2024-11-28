@@ -7,7 +7,9 @@ from io import BytesIO
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from flask import make_response
-
+from flask_socketio import SocketIO, emit
+from threading import Thread
+import random
 
 # Create the Flask app instance
 app = Flask(__name__)
@@ -183,6 +185,32 @@ def get_received_data():
         return jsonify({"received_data": data})
     else:
         return jsonify({"message": "No data available"})
+
+# egram stuff
+socketio = SocketIO(app)
+
+# Simulated real-time data
+
+
+def generate_live_data():
+    while True:
+        # Simulate atrium and ventricular voltage data
+        data = {"atrium": random.uniform(
+            0, 5), "ventrical": random.uniform(0, 5)}
+        socketio.emit('update_data', data)
+        time.sleep(1)  # Send data every second
+
+
+@app.route("/export", methods=["POST"])
+def export_to_csv():
+    # Placeholder logic for exporting data to CSV
+    return jsonify({"message": "Data exported successfully!"})
+
+
+# Start background thread for live data
+thread = Thread(target=generate_live_data)
+thread.daemon = True
+thread.start()
 
 
 # Register the views blueprint with the Flask app
