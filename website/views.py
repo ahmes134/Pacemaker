@@ -11,7 +11,7 @@ app = Flask(__name__)
 views = Blueprint('views', __name__)
 
 # Initialize serial communication
-serial_conn = SerialCommunication(port="COM11", baudrate=115200)
+serial_conn = SerialCommunication(port="COM6", baudrate=115200)
 serial_conn.connect()
 
 # Status mapping for styling
@@ -80,7 +80,7 @@ def submit():
         Response_Factor = int(data.get('Response_Factor', 0))
         Recovery_Time = int(data.get('Recovery_Time', 0))
         Function_Call = int(data.get('Function_Call', 0))
-        port = data.get('port', "COM11")
+        port = data.get('port', "COM6")
 
         # Print the received parameters for debugging
         print("Received Parameters:")
